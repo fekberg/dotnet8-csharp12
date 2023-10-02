@@ -3,7 +3,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.Json.Serialization.Metadata;
 
-
 #region System.Net.Http.Json extensions for IAsyncEnumerable
 const string url = "https://ps-async.fekberg.com/api/stocks/MSFT";
 using var client = new HttpClient();
@@ -17,56 +16,78 @@ await foreach (Stock stock in stocks)
 #endregion
 
 #region Polymorphic serialization
-var users = new IUser[] {
-    new User("Filip"),
-    new InactiveUser("Sofie", DateTimeOffset.UtcNow),
-    new DisabledUser("Mila", DateTimeOffset.UtcNow),
-    new DisabledUser("Elise", DateTimeOffset.UtcNow)
+var users = new User[] {
+    new User() { Username = "Filip" },
+    new InactiveUser(DateTimeOffset.UtcNow) { Username = "Sofie" },
+    new DisabledUser(DateTimeOffset.UtcNow) { Username = "Mila" },
+    new DisabledUser(DateTimeOffset.UtcNow) { Username = "Elise" }
 };
 
 var json = JsonSerializer.Serialize(users);
 
 var jsonAsString = """
-[{"$discriminator":"user","Username":"Filip","RegistrationInformation":{"RegisteredAt":"2020-09-29T12:08:43.8403576+00:00"}},{"$discriminator":"inactive","InactiveSince":"2020-09-29T12:08:43.8403585+00:00","Username":"Sofie","RegistrationInformation":{"RegisteredAt":"2020-09-29T12:08:43.8403953+00:00"}},{"$discriminator":"disabled","DisabledSince":"2023-09-29T12:08:43.8403957+00:00","Username":"Mila","RegistrationInformation":{"RegisteredAt":"2023-09-29T12:08:43.8404261+00:00"}},{"$discriminator":"disabled","DisabledSince":"2023-09-29T12:08:43.8404264+00:00","Username":"Elise","RegistrationInformation":{"RegisteredAt":"2023-09-29T12:08:43.8404265+00:00"}}]
+[
+    {
+        "$discriminator": "user",
+        "Username": "Filip",
+        "PhoneNumbers": [
+            "12345"
+        ]
+    },
+    {
+        "$discriminator": "inactive",
+        "InactiveSince": "2023-10-02T11:53:24.2010948+00:00",
+        "Username": "Sofie",
+        "PhoneNumbers": [
+            "6789"
+        ]
+    },
+    {
+        "$discriminator": "disabled",
+        "DisabledSince": "2023-10-02T11:53:24.2011285+00:00",
+        "Username": "Mila",
+        "PhoneNumbers": []
+    },
+    {
+        "$discriminator": "disabled",
+        "DisabledSince": "2023-10-02T11:53:24.2011561+00:00",
+        "Username": "Elise",
+        "PhoneNumbers": []
+    }
+]    
 """;
 
-var usersFromJson = JsonSerializer.Deserialize<IUser[]>(jsonAsString);
+var usersFromJson = JsonSerializer.Deserialize<User[]>(jsonAsString);
 
 Console.ReadLine();
 
 #endregion
 
+
+
+
+
+
+
+
+
 [JsonDerivedType(typeof(User), typeDiscriminator: "user")]
 [JsonDerivedType(typeof(InactiveUser), typeDiscriminator: "inactive")]
 [JsonDerivedType(typeof(DisabledUser), typeDiscriminator: "disabled")]
-[JsonPolymorphic(
-    TypeDiscriminatorPropertyName = "$discriminator",
-    UnknownDerivedTypeHandling = JsonUnknownDerivedTypeHandling.FallBackToBaseType)]
-
-interface IUser
+[JsonPolymorphic(TypeDiscriminatorPropertyName = "$discriminator")]
+record User
 {
-    public string Username { get; init; }
-}
+    public string Username { get; init; } = "Anonymous";
 
-[JsonObjectCreationHandling(JsonObjectCreationHandling.Populate)]
-record RegistrationInformation
-{
     [JsonObjectCreationHandling(JsonObjectCreationHandling.Populate)]
-    public DateTimeOffset RegisteredAt { get; }
-        = DateTimeOffset.UtcNow;
+    public List<string> PhoneNumbers { get; } = new();
 }
 
-record User(string Username) : IUser
-{
-    [JsonObjectCreationHandling(JsonObjectCreationHandling.Populate)]
-    public RegistrationInformation RegistrationInformation { get; } = new();
-}
+record DisabledUser(DateTimeOffset DisabledSince)
+    : User();
 
-record DisabledUser(string Username, DateTimeOffset DisabledSince)
-    : User(Username);
-
-record InactiveUser(string Username, DateTimeOffset InactiveSince) 
-    : User(Username);
+record InactiveUser(DateTimeOffset InactiveSince) 
+    : User();
 
 record Stock(string Ticker, 
     string Identifier, 

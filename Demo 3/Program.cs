@@ -1,2 +1,2 @@
-﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+﻿byte[] payload = new byte[] { 0x1, 0xf1, 0xaa, 0xf2 }; // Collection literal!
+

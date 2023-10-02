@@ -1,21 +1,32 @@
-﻿using System.Text.Json;
-using System.Text.Json.Serialization;
+﻿using Microsoft.Extensions.Time.Testing;
 
-CustomerInfo customer =
-    JsonSerializer.Deserialize<CustomerInfo>("""{"Name":"John Doe","Company":{"Name":"Contoso"}}""")!;
-
-Console.WriteLine(JsonSerializer.Serialize(customer));
-
-class CompanyInfo
+var provider = new FakeTimeProvider()
 {
-    public string Name { get; set; }
-    public string? PhoneNumber { get; set; }
+    AutoAdvanceAmount = TimeSpan.FromHours(24)
+};
+
+OrderService service = new(provider);
+
+Console.WriteLine(service.CountOrders());
+
+Console.WriteLine(service.CountOrders());
+
+class OrderService(TimeProvider timeProvider)
+{
+    public int CountOrders()
+    {
+        var utcNow = timeProvider.GetUtcNow();
+
+        Console.WriteLine(utcNow);
+
+        return utcNow.DayOfYear;
+    }
 }
 
-[JsonObjectCreationHandling(JsonObjectCreationHandling.Populate)]
-class CustomerInfo
+class CustomTimeProvider : TimeProvider
 {
-    // Both of these properties are read-only.
-    public string Name { get; } = "Anonymous";
-    public CompanyInfo Company { get; } = new() { Name = "N/A", PhoneNumber = "N/A" };
+    public override DateTimeOffset GetUtcNow()
+    {
+        return DateTimeOffset.Now; // Don't do this...
+    }
 }
