@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using System.Threading.RateLimiting;
 
+#region Setup
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddExceptionHandler<ExceptionHandler>();
@@ -25,6 +26,7 @@ var app = builder.Build();
 app.UseRateLimiter();
 
 app.UseExceptionHandler(options => { });
+#endregion
 
 app.MapGet("/", (HttpContext context, 
     [FromHeader]string accept, string input = "anonymous") => {

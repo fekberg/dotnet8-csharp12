@@ -20,6 +20,7 @@ Console.ReadLine();
 #endregion
 
 #region Polymorphic serialization
+
 var users = new User[] {
     new User() { Username = "Filip" },
     new InactiveUser(DateTimeOffset.UtcNow) { Username = "Sofie" },
@@ -80,10 +81,12 @@ Console.ReadLine();
 
 
 
+#region Json Polymorphic
 [JsonDerivedType(typeof(User), typeDiscriminator: "user")]
 [JsonDerivedType(typeof(InactiveUser), typeDiscriminator: "inactive")]
 [JsonDerivedType(typeof(DisabledUser), typeDiscriminator: "disabled")]
 [JsonPolymorphic(TypeDiscriminatorPropertyName = "$discriminator")]
+#endregion
 record User()
 {
     public string Username { get; init; } = "Anonymous";

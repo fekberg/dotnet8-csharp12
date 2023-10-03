@@ -1,8 +1,8 @@
 ﻿#region Collection expressions
 
-// Collection literal
 using Interceptors;
 
+// Collection literal
 byte[] payload = [0x1, 0xf1, 0xaa, 0xf2];
 byte[] checksum = [0xff, 0xab];
 

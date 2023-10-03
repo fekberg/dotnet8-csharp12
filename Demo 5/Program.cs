@@ -4,27 +4,31 @@ using System.Numerics;
 using System.Text;
 using static System.Console;
 
-#region List, Slice, Span Patterns
+#region List & Slice Patterns
 
 byte[] payload = new byte[] { 0x02, 0xf1, 0xaa, 0xf2, 0x23, 0xff };
 
 var result = payload switch
 {
-    [0x02, .. var slice] data => Process(data, slice),
-    [0x03, _, .. var slice] data => Process(data, slice),
-    [0x04, _, _, .. var slice] data => Process(data, slice),
-    [] or [..] => 0x00,
-    _ => throw new NotImplementedException()
-} ;
+    // 0x02 => Skip 1
+    // 0x03 => Skip 2
+    // 0x04 => Skip 3
+    // Empty or Other
+    
+    // Null
+    _ => 0x00
+
+};
+
+#region Completed
+//    [0x02, .. var slice] data => Process(data, slice),
+//    [0x03, _, .. var slice] data => Process(data, slice),
+//    [0x04, _, _, .. var slice] data => Process(data, slice),
+//    [] or [..] => 0x00,
+//    _ => throw new NotImplementedException()
+#endregion
 
 WriteLine($"0x{result:x}");
-
-ReadOnlySpan<char> input = "Filip";
-
-if(input is "Filip")
-{
-    WriteLine("Found the name!");
-}
 
 ReadLine();
 
@@ -32,6 +36,14 @@ byte Process(Span<byte> collection, Span<byte> slice)
 {
     return slice[0];
 }
+
+#endregion
+
+#region Span Pattern
+
+ReadOnlySpan<char> input = "Filip";
+
+// Match?
 
 #endregion
 
@@ -58,8 +70,7 @@ var sum = Add(x, y);
 var sum2 = Add(1, 2);
 var sum3 = Add(100m, 10.5m);
 
-static T Add<T>(T left, T right)
-    where T : INumber<T>
+static T Add<T>(T left, T right) where T : INumber<T>
 {
     return left + right;
 }

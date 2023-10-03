@@ -1,11 +1,13 @@
 ﻿using Microsoft.Extensions.Time.Testing;
 
-#region TimeProvider
+#region FakeTimeProvider
 var provider = new FakeTimeProvider()
 {
     AutoAdvanceAmount = TimeSpan.FromHours(24)
 };
 #endregion
+
+#region Demo
 
 OrderService service = new();
 
@@ -15,14 +17,25 @@ Console.WriteLine(service.HasPaymentExpired(order));
 
 Console.WriteLine(service.HasPaymentExpired(order));
 
+#endregion
+
+record Order(DateTimeOffset PaymentReservedOn);
+
 class OrderService
 {
     public bool HasPaymentExpired(Order order)
     {
         return (DateTimeOffset.UtcNow - order.PaymentReservedOn).TotalDays > 30;
     }
-
 }
+
+
+
+
+
+
+
+
 
 class CustomTimeProvider : TimeProvider
 {
@@ -31,5 +44,3 @@ class CustomTimeProvider : TimeProvider
         return DateTimeOffset.Now; // Don't do this...
     }
 }
-
-record Order(DateTimeOffset PaymentReservedOn);

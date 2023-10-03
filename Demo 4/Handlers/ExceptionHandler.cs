@@ -12,7 +12,6 @@ public class ExceptionHandler : IExceptionHandler
         this.logger = logger;
     }
    
-
     public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, 
         Exception exception, CancellationToken cancellationToken)
     {
