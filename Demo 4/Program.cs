@@ -9,7 +9,13 @@ using System.Threading.RateLimiting;
 #region Setup
 var builder = WebApplication.CreateBuilder(args);
 
+#region Exception Handler
+
 builder.Services.AddExceptionHandler<ExceptionHandler>();
+
+#endregion
+
+#region Rate Limiter
 
 builder.Services.AddRateLimiter(limiter => {
     limiter.AddFixedWindowLimiter("goAway", options =>
@@ -21,15 +27,21 @@ builder.Services.AddRateLimiter(limiter => {
     });
 });
 
+#endregion
+
 var app = builder.Build();
 
+#region Rate Limiter & Exception Handler
 app.UseRateLimiter();
 
 app.UseExceptionHandler(options => { });
 #endregion
 
+#endregion
+
 app.MapGet("/", (HttpContext context, 
-    [FromHeader]string accept, string input = "anonymous") => {
+    [FromHeader]string accept, 
+    string input = "anonymous") => {
         if(input == "filip")
         {
             throw new NotImplementedException();
@@ -37,6 +49,9 @@ app.MapGet("/", (HttpContext context,
 
         return DateTimeOffset.UtcNow.Ticks;
 })
+#region Apply Rate Limiter
     .RequireRateLimiting("goAway");
+#endregion
+
 
 app.Run();

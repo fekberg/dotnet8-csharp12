@@ -8,7 +8,7 @@ using System.Text.Json.Serialization.Metadata;
 const string url = "https://ps-async.fekberg.com/api/stocks/MSFT";
 using var client = new HttpClient();
 
-IAsyncEnumerable<Stock> stocks = 
+IAsyncEnumerable<Stock> stocks =
     client.GetFromJsonAsAsyncEnumerable<Stock>(url, new JsonSerializerOptions(JsonSerializerDefaults.Web) { TypeInfoResolver =  new DefaultJsonTypeInfoResolver()})!;
 
 await foreach (Stock stock in stocks)

@@ -1,10 +1,12 @@
 ﻿using Microsoft.Extensions.Time.Testing;
 
 #region FakeTimeProvider
+
 var provider = new FakeTimeProvider()
 {
     AutoAdvanceAmount = TimeSpan.FromHours(24)
 };
+
 #endregion
 
 #region Demo

@@ -4,21 +4,27 @@ using System.Numerics;
 using System.Text;
 using static System.Console;
 
+
 #region List & Slice Patterns
 
 byte[] payload = new byte[] { 0x02, 0xf1, 0xaa, 0xf2, 0x23, 0xff };
 
+#region Pattern matching
+
 var result = payload switch
 {
-    // 0x02 => Skip 1
-    // 0x03 => Skip 2
-    // 0x04 => Skip 3
+    // 0x02 => Skip 1 ... process result
+    // 0x03 => Skip 2 ... process result
+    // 0x04 => Skip 3 ... process result
     // Empty or Other
-    
+
     // Null
     _ => 0x00
 
 };
+
+
+#endregion
 
 #region Completed
 //    [0x02, .. var slice] data => Process(data, slice),
@@ -53,6 +59,8 @@ ReadOnlySpan<byte> fullName = "Filip Ekberg"u8;
 
 int space = fullName.IndexOf(" "u8);
 
+#region Slice
+
 ReadOnlySpan<byte> first = fullName[..space];
 
 ReadOnlySpan<byte> last = fullName[++space..];
@@ -61,14 +69,18 @@ WriteLine($"{Encoding.UTF8.GetString(first).ToLowerInvariant()}-{Encoding.UTF8.G
 
 #endregion
 
+#endregion
+
 #region Generic Math
 
+#region Demo
 var x = new Addable();
 var y = new Addable();
 
 var sum = Add(x, y);
 var sum2 = Add(1, 2);
 var sum3 = Add(100m, 10.5m);
+#endregion
 
 static T Add<T>(T left, T right) where T : INumber<T>
 {
@@ -371,8 +383,10 @@ class Addable : INumber<Addable>
 #endregion
 
 #region Required Properties
+
 class User
 {
-    public required string Username { get; set; }
+    public string Username { get; init; }
 }
+
 #endregion

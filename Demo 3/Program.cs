@@ -2,8 +2,6 @@
 
 // Span ?
 
-// Range ?
-
-// Slice ?
+// Range and Slice?
 
 // Index ?

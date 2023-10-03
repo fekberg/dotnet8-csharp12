@@ -18,7 +18,7 @@ namespace Demo_7___.NET_MAUI
 #if DEBUG
     		builder.Logging.AddDebug();
 #endif
-
+            
             return builder.Build();
         }
     }

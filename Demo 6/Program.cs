@@ -1,19 +1,21 @@
-﻿#region Collection expressions
+﻿using Interceptors;
 
-using Interceptors;
+#region Collection expressions
 
 // Collection literal
 byte[] payload = [0x1, 0xf1, 0xaa, 0xf2];
 byte[] checksum = [0xff, 0xab];
 
-byte[] result = [..payload, ..checksum];
+byte[] result = [.. payload, ..checksum];
 
 #endregion
 
 #region Interceptors
+
 var logger = new Logger();
 
 logger.Log("Hello world!");
+
 #endregion
 
 #region Primary constructors
