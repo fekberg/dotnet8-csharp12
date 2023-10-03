@@ -4,8 +4,10 @@ using System.Text.Json.Serialization;
 using System.Text.Json.Serialization.Metadata;
 
 #region System.Net.Http.Json extensions for IAsyncEnumerable
+
 const string url = "https://ps-async.fekberg.com/api/stocks/MSFT";
 using var client = new HttpClient();
+
 IAsyncEnumerable<Stock> stocks = 
     client.GetFromJsonAsAsyncEnumerable<Stock>(url, new JsonSerializerOptions(JsonSerializerDefaults.Web) { TypeInfoResolver =  new DefaultJsonTypeInfoResolver()})!;
 
@@ -13,6 +15,8 @@ await foreach (Stock stock in stocks)
 {
     Console.WriteLine($"Stock: '{stock.Ticker}'");
 }
+
+Console.ReadLine();
 #endregion
 
 #region Polymorphic serialization
@@ -71,11 +75,16 @@ Console.ReadLine();
 
 
 
+
+
+
+
+
 [JsonDerivedType(typeof(User), typeDiscriminator: "user")]
 [JsonDerivedType(typeof(InactiveUser), typeDiscriminator: "inactive")]
 [JsonDerivedType(typeof(DisabledUser), typeDiscriminator: "disabled")]
 [JsonPolymorphic(TypeDiscriminatorPropertyName = "$discriminator")]
-record User
+record User()
 {
     public string Username { get; init; } = "Anonymous";
 

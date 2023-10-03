@@ -1,26 +1,27 @@
 ﻿using Microsoft.Extensions.Time.Testing;
 
+#region TimeProvider
 var provider = new FakeTimeProvider()
 {
     AutoAdvanceAmount = TimeSpan.FromHours(24)
 };
+#endregion
 
-OrderService service = new(provider);
+OrderService service = new();
 
-Console.WriteLine(service.CountOrders());
+var order = new Order(DateTimeOffset.UtcNow.AddDays(-10));
 
-Console.WriteLine(service.CountOrders());
+Console.WriteLine(service.HasPaymentExpired(order));
 
-class OrderService(TimeProvider timeProvider)
+Console.WriteLine(service.HasPaymentExpired(order));
+
+class OrderService
 {
-    public int CountOrders()
+    public bool HasPaymentExpired(Order order)
     {
-        var utcNow = timeProvider.GetUtcNow();
-
-        Console.WriteLine(utcNow);
-
-        return utcNow.DayOfYear;
+        return (DateTimeOffset.UtcNow - order.PaymentReservedOn).TotalDays > 30;
     }
+
 }
 
 class CustomTimeProvider : TimeProvider
@@ -30,3 +31,5 @@ class CustomTimeProvider : TimeProvider
         return DateTimeOffset.Now; // Don't do this...
     }
 }
+
+record Order(DateTimeOffset PaymentReservedOn);

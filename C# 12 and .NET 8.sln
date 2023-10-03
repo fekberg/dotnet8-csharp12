@@ -3,17 +3,21 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34004.107
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo 1 - System.Text.Json", "Demo 1\Demo 1 - System.Text.Json.csproj", "{C6D0739E-844E-4835-AF6A-8146556439F0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo 1 - System.Text.Json", "Demo 1\Demo 1 - System.Text.Json.csproj", "{C6D0739E-844E-4835-AF6A-8146556439F0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo 2 - TimeProvider", "Demo 2\Demo 2 - TimeProvider.csproj", "{EEB6FD9A-019D-4717-9194-55EE3272739C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo 2 - TimeProvider", "Demo 2\Demo 2 - TimeProvider.csproj", "{EEB6FD9A-019D-4717-9194-55EE3272739C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo 3 - Spans and Ranges", "Demo 3\Demo 3 - Spans and Ranges.csproj", "{2E9CE388-A8B3-4E5B-A2BE-770E5673A005}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo 3 - Spans and Ranges", "Demo 3\Demo 3 - Spans and Ranges.csproj", "{2E9CE388-A8B3-4E5B-A2BE-770E5673A005}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo 4 - C# 10", "Demo 4\Demo 4 - C# 10.csproj", "{EB505C5F-0D5B-4B81-BF9C-2AE05876A3D0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo 4 - ASP.NET Core and C# 10", "Demo 4\Demo 4 - ASP.NET Core and C# 10.csproj", "{EB505C5F-0D5B-4B81-BF9C-2AE05876A3D0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo 5 - C# 11", "Demo 5\Demo 5 - C# 11.csproj", "{669D35FE-EECF-4A30-9BA3-1890FD34C21B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo 5 - C# 11", "Demo 5\Demo 5 - C# 11.csproj", "{669D35FE-EECF-4A30-9BA3-1890FD34C21B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo 6 - C# 12", "Demo 6\Demo 6 - C# 12.csproj", "{BDB56895-FD3A-42B8-80DE-E118FEC690EA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo 6 - C# 12", "Demo 6\Demo 6 - C# 12.csproj", "{BDB56895-FD3A-42B8-80DE-E118FEC690EA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo 7 - .NET MAUI", "Demo 7 - .NET MAUI\Demo 7 - .NET MAUI.csproj", "{6DAE9F41-3A87-46CC-A548-313EFF89877F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo 8 - Metrics", "Demo 8\Demo 8 - Metrics.csproj", "{779CA37C-484A-4EDA-BAEF-E15775BA8A41}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +49,16 @@ Global
 		{BDB56895-FD3A-42B8-80DE-E118FEC690EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BDB56895-FD3A-42B8-80DE-E118FEC690EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BDB56895-FD3A-42B8-80DE-E118FEC690EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6DAE9F41-3A87-46CC-A548-313EFF89877F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6DAE9F41-3A87-46CC-A548-313EFF89877F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6DAE9F41-3A87-46CC-A548-313EFF89877F}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{6DAE9F41-3A87-46CC-A548-313EFF89877F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6DAE9F41-3A87-46CC-A548-313EFF89877F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6DAE9F41-3A87-46CC-A548-313EFF89877F}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{779CA37C-484A-4EDA-BAEF-E15775BA8A41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{779CA37C-484A-4EDA-BAEF-E15775BA8A41}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{779CA37C-484A-4EDA-BAEF-E15775BA8A41}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{779CA37C-484A-4EDA-BAEF-E15775BA8A41}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
