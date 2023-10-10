@@ -12,9 +12,15 @@ public class ExceptionHandler : IExceptionHandler
         this.logger = logger;
     }
    
-    public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, 
+    public async ValueTask<bool> TryHandleAsync(
+        HttpContext httpContext, 
         Exception exception, CancellationToken cancellationToken)
     {
+
+
+
+
+
         WriteLine("Where is this from?");
 
         logger.LogError(exception, "Caught an unexcepted error");
@@ -23,7 +29,7 @@ public class ExceptionHandler : IExceptionHandler
             title = "error",
             message = exception.Message,
             url = httpContext.Request.GetDisplayUrl()
-        });;
+        });
 
         return true;
     }

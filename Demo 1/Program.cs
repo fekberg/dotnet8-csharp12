@@ -3,21 +3,29 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.Json.Serialization.Metadata;
 
-#region System.Net.Http.Json extensions for IAsyncEnumerable
+User user = new InactiveUser(DateTimeOffset.UtcNow);
 
-const string url = "https://ps-async.fekberg.com/api/stocks/MSFT";
-using var client = new HttpClient();
-
-IAsyncEnumerable<Stock> stocks =
-    client.GetFromJsonAsAsyncEnumerable<Stock>(url, new JsonSerializerOptions(JsonSerializerDefaults.Web) { TypeInfoResolver =  new DefaultJsonTypeInfoResolver()})!;
-
-await foreach (Stock stock in stocks)
+if(user is { LoginAttempts: > 10 })
 {
-    Console.WriteLine($"Stock: '{stock.Ticker}'");
+
 }
 
-Console.ReadLine();
-#endregion
+
+//#region System.Net.Http.Json extensions for IAsyncEnumerable
+
+//const string url = "https://ps-async.fekberg.com/api/stocks/MSFT";
+//using var client = new HttpClient();
+
+//IAsyncEnumerable<Stock> stocks =
+//    client.GetFromJsonAsAsyncEnumerable<Stock>(url, new JsonSerializerOptions(JsonSerializerDefaults.Web) { TypeInfoResolver =  new DefaultJsonTypeInfoResolver()})!;
+
+//await foreach (Stock stock in stocks)
+//{
+//    Console.WriteLine($"Stock: '{stock.Ticker}'");
+//}
+
+//Console.ReadLine();
+//#endregion
 
 #region Polymorphic serialization
 
@@ -92,14 +100,20 @@ record User()
     public string Username { get; init; } = "Anonymous";
 
     [JsonObjectCreationHandling(JsonObjectCreationHandling.Populate)]
+    public int LoginAttempts { get; set; }
     public List<string> PhoneNumbers { get; } = new();
 }
 
 record DisabledUser(DateTimeOffset DisabledSince)
     : User();
 
-record InactiveUser(DateTimeOffset InactiveSince) 
-    : User();
+record InactiveUser(DateTimeOffset InactiveSince)
+    : User()
+{
+}
+
+
+
 
 record Stock(string Ticker, 
     string Identifier, 

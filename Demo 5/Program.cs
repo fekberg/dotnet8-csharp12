@@ -5,6 +5,10 @@ using System.Text;
 using static System.Console;
 
 
+var user = new User { Username = null! };
+
+
+
 #region List & Slice Patterns
 
 byte[] payload = new byte[] { 0x02, 0xf1, 0xaa, 0xf2, 0x23, 0xff };
@@ -13,14 +17,10 @@ byte[] payload = new byte[] { 0x02, 0xf1, 0xaa, 0xf2, 0x23, 0xff };
 
 var result = payload switch
 {
-    // 0x02 => Skip 1 ... process result
-    // 0x03 => Skip 2 ... process result
-    // 0x04 => Skip 3 ... process result
-    // Empty or Other
-
-    // Null
-    _ => 0x00
-
+    [ 0x02, .. var slice ] data => Process(data, slice),
+    [ 0x03, _, .. var slice] data => Process(data, slice),
+    [ 0x04, _, _, .. var slice ] data => Process(data, slice),
+    [] or [..] => 0x00
 };
 
 
@@ -49,7 +49,10 @@ byte Process(Span<byte> collection, Span<byte> slice)
 
 ReadOnlySpan<char> input = "Filip";
 
-// Match?
+if(input is "Filip")
+{
+
+}
 
 #endregion
 
@@ -386,7 +389,7 @@ class Addable : INumber<Addable>
 
 class User
 {
-    public string Username { get; init; }
+    public required string Username { get; init; }
 }
 
 #endregion

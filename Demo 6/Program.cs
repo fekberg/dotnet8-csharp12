@@ -2,11 +2,10 @@
 
 #region Collection expressions
 
-// Collection literal
-byte[] payload = [0x1, 0xf1, 0xaa, 0xf2];
-byte[] checksum = [0xff, 0xab];
+Span<byte> payload = [0x1, 0xf1, 0xaa, 0xf2];
+Span<byte> checksum = [0xff, 0xab];
 
-byte[] result = [.. payload, ..checksum];
+Span<byte> result = [..payload, ..checksum];
 
 #endregion
 
@@ -15,6 +14,8 @@ byte[] result = [.. payload, ..checksum];
 var logger = new Logger();
 
 logger.Log("Hello world!");
+
+
 
 #endregion
 

@@ -49,9 +49,8 @@ app.MapGet("/", (HttpContext context,
 
         return DateTimeOffset.UtcNow.Ticks;
 })
-#region Apply Rate Limiter
     .RequireRateLimiting("goAway");
-#endregion
+
 
 
 app.Run();
