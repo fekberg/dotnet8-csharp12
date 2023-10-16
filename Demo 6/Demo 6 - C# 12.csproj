@@ -9,6 +9,7 @@
 
 		<LangVersion>preview</LangVersion>
 		<Features>InterceptorsPreview</Features>
+		<InterceptorsPreviewNamespaces>$(InterceptorsPreviewNamespaces);Interceptors</InterceptorsPreviewNamespaces>
 	</PropertyGroup>
 
 </Project>

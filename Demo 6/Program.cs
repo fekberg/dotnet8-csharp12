@@ -1,9 +1,9 @@
 ﻿using Interceptors;
 
-#region Collection expressions
+#region Collection expressions & Spread operator
 
-Span<byte> payload = [0x1, 0xf1, 0xaa, 0xf2];
-Span<byte> checksum = [0xff, 0xab];
+List<byte> payload = [0x1, 0xf1, 0xaa, 0xf2];
+byte[] checksum = [0xff, 0xab];
 
 Span<byte> result = [..payload, ..checksum];
 
@@ -14,8 +14,6 @@ Span<byte> result = [..payload, ..checksum];
 var logger = new Logger();
 
 logger.Log("Hello world!");
-
-
 
 #endregion
 

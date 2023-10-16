@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.Time.Testing;
 
 #region FakeTimeProvider
-
 var provider = new FakeTimeProvider()
 {
     AutoAdvanceAmount = TimeSpan.FromHours(24)
@@ -33,9 +32,7 @@ class OrderService
     }
     public bool HasPaymentExpired(Order order)
     {
-        var now = timeProvider.GetUtcNow();
-        Console.WriteLine(now);
-        return (now - order.PaymentReservedOn).TotalDays > 30;
+        return (timeProvider.GetUtcNow() - order.PaymentReservedOn).TotalDays > 30;
     }
 }
 

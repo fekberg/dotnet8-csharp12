@@ -1,7 +1,5 @@
 ﻿global using static System.Console;
 
-using CSharp10;
-
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using System.Threading.RateLimiting;
@@ -40,8 +38,7 @@ app.UseExceptionHandler(options => { });
 #endregion
 
 app.MapGet("/", (HttpContext context, 
-    [FromHeader]string accept, 
-    string input = "anonymous") => {
+    [FromHeader]string accept, string input = "anonymous") => {
         if(input == "filip")
         {
             throw new NotImplementedException();
@@ -50,7 +47,5 @@ app.MapGet("/", (HttpContext context,
         return DateTimeOffset.UtcNow.Ticks;
 })
     .RequireRateLimiting("goAway");
-
-
 
 app.Run();

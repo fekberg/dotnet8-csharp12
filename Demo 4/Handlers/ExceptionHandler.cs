@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http.Extensions;
 
-namespace CSharp10;
-
 public class ExceptionHandler : IExceptionHandler
 {
     private readonly ILogger<ExceptionHandler> logger;
@@ -16,11 +14,6 @@ public class ExceptionHandler : IExceptionHandler
         HttpContext httpContext, 
         Exception exception, CancellationToken cancellationToken)
     {
-
-
-
-
-
         WriteLine("Where is this from?");
 
         logger.LogError(exception, "Caught an unexcepted error");
