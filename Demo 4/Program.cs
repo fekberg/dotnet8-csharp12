@@ -1,11 +1,19 @@
 ﻿global using static System.Console;
-
+using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using System.Threading.RateLimiting;
 
-#region Setup
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddAntiforgery();
+
+#region Keyed Services
+
+builder.Services.AddKeyedTransient<ICache, DistributedCache>("distributed");
+builder.Services.AddKeyedTransient<ICache, InMemoryCache>("memory");
+
+#endregion
 
 #region Exception Handler
 
@@ -29,23 +37,48 @@ builder.Services.AddRateLimiter(limiter => {
 
 var app = builder.Build();
 
-#region Rate Limiter & Exception Handler
 app.UseRateLimiter();
 
 app.UseExceptionHandler(options => { });
-#endregion
 
-#endregion
+app.UseAntiforgery();
 
-app.MapGet("/", (HttpContext context, 
-    [FromHeader]string accept, string input = "anonymous") => {
-        if(input == "filip")
-        {
-            throw new NotImplementedException();
-        }
+app.MapGet("/", (
+    HttpContext context,
+    [FromKeyedServices("memory")]ICache cache,
+    [FromHeader]string accept, 
+    string input = "anonymous") => 
+{
+        if(input != "anonymous") throw new NotImplementedException();
 
         return DateTimeOffset.UtcNow.Ticks;
-})
-    .RequireRateLimiting("goAway");
+}).RequireRateLimiting("goAway");
+
+app.MapGet("/short-circuit", () => "I'm executed immediately!")
+    .ShortCircuit();
+
+app.MapGet("/upload", (HttpContext context, IAntiforgery antiforgery) =>
+{
+    var token = antiforgery.GetAndStoreTokens(context);
+
+    return Results.Content($"""
+    <html>
+    <body>
+        <form method="post" action="upload" enctype="multipart/form-data">
+            <input name="{token.FormFieldName}" type="hidden" value="{token.RequestToken}"/>
+            <input type="file" name="data" />
+            <input type="submit" text="submit" />
+        </form>
+    </body>
+    """, "text/html");
+});
+
+app.MapPost("/upload", async (
+    IFormFile data, 
+    HttpContext context, 
+    IAntiforgery antiforgery) => 
+{
+    await antiforgery.ValidateRequestAsync(context);
+});
 
 app.Run();

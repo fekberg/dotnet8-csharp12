@@ -4,7 +4,6 @@ Span<byte> payloadSpan = payload;
 
 Span<byte> subset = payloadSpan[^2..];
 
-
 // Range and Slice?
 
 // Index ?

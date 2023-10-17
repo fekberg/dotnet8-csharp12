@@ -10,7 +10,7 @@ var provider = new FakeTimeProvider()
 
 #region Demo
 
-OrderService service = new(provider);
+OrderService service = new();
 
 var order = new Order(DateTimeOffset.UtcNow.AddDays(-10));
 
@@ -22,19 +22,13 @@ Console.WriteLine(service.HasPaymentExpired(order));
 
 record Order(DateTimeOffset PaymentReservedOn);
 
-class OrderService
-{
-    private readonly TimeProvider timeProvider;
-
-    public OrderService(TimeProvider timeProvider)
+    class OrderService
     {
-        this.timeProvider = timeProvider;
+        public bool HasPaymentExpired(Order order)
+        {
+            return (DateTimeOffset.UtcNow - order.PaymentReservedOn).TotalDays > 30;
+        }
     }
-    public bool HasPaymentExpired(Order order)
-    {
-        return (timeProvider.GetUtcNow() - order.PaymentReservedOn).TotalDays > 30;
-    }
-}
 
 
 
