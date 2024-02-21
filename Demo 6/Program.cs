@@ -2,10 +2,16 @@
 
 #region Collection expressions & Spread operator
 
+
+
 List<byte> payload = [0x1, 0xf1, 0xaa, 0xf2];
+
 byte[] checksum = [0xff, 0xab];
 
 Span<byte> result = [..payload, ..checksum];
+
+
+
 
 #endregion
 
@@ -26,8 +32,10 @@ class User(string username)
 
 class OrderController(IUserRepository repository)
 {
-    public (Guid, decimal) GetTotalFor(Guid orderId) =>
-        (orderId, repository.Sum(orderId));
+    public (Guid, decimal) GetTotalFor(Guid orderId)
+    {
+       return (orderId, repository.Sum(orderId));
+    }
 }
 
 interface IUserRepository

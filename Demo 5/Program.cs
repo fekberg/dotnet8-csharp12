@@ -4,9 +4,7 @@ using System.Numerics;
 using System.Text;
 using static System.Console;
 
-
 var user = new User { Username = null! };
-
 
 
 #region List & Slice Patterns

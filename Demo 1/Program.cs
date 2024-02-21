@@ -1,7 +1,32 @@
-﻿using System.Net.Http.Json;
+﻿using System.Globalization;
+using System.Net.Http.Json;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.Json.Serialization.Metadata;
+
+#region Populate readonly & required and init
+
+var json = """
+{
+    "PhoneNumbers": [
+        "12345"
+    ]
+}
+""";
+
+var user = JsonSerializer.Deserialize<User>(json);
+
+Console.WriteLine($"Numbers for {user.Username}");
+
+foreach(var number in user.PhoneNumbers)
+{
+    Console.WriteLine(number);
+}
+
+Console.ReadLine();
+
+#endregion
+
 
 #region System.Net.Http.Json extensions for IAsyncEnumerable
 
@@ -20,6 +45,7 @@ Console.ReadLine();
 
 #endregion
 
+
 #region Polymorphic serialization
 
 var users = new User[] {
@@ -29,7 +55,7 @@ var users = new User[] {
     new DisabledUser(DateTimeOffset.UtcNow) { Username = "Elise" }
 };
 
-var json = JsonSerializer.Serialize(users);
+json = JsonSerializer.Serialize(users);
 
 var jsonAsString = """
 [
@@ -72,19 +98,23 @@ Console.ReadLine();
 
 
 
+
+
+
+
 #region Json Polymorphic
 [JsonDerivedType(typeof(User), typeDiscriminator: "user")]
 [JsonDerivedType(typeof(InactiveUser), typeDiscriminator: "inactive")]
 [JsonDerivedType(typeof(DisabledUser), typeDiscriminator: "disabled")]
 [JsonPolymorphic(TypeDiscriminatorPropertyName = "$discriminator")]
 #endregion
-
 record User()
 {
-    public string Username { get; init; } = "Anonymous";
+    public required string Username { get; init; }
 
     [JsonObjectCreationHandling(JsonObjectCreationHandling.Populate)]
     public List<string> PhoneNumbers { get; } = new();
+
 }
 
 record DisabledUser(DateTimeOffset DisabledSince)
@@ -94,7 +124,6 @@ record InactiveUser(DateTimeOffset InactiveSince)
     : User()
 {
 }
-
 
 record Stock(string Ticker, 
     string Identifier, 

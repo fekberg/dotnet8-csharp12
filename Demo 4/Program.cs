@@ -10,6 +10,8 @@ builder.Services.AddAntiforgery();
 
 #region Keyed Services
 
+builder.Services.AddTransient<ICache, InMemoryCache>();
+
 builder.Services.AddKeyedTransient<ICache, DistributedCache>("distributed");
 builder.Services.AddKeyedTransient<ICache, InMemoryCache>("memory");
 
@@ -45,7 +47,9 @@ app.UseAntiforgery();
 
 app.MapGet("/", (
     HttpContext context,
-    [FromKeyedServices("memory")]ICache cache,
+
+    [FromKeyedServices("distributed")]ICache cache,
+
     [FromHeader]string accept, 
     string input = "anonymous") => 
 {
@@ -54,8 +58,27 @@ app.MapGet("/", (
         return DateTimeOffset.UtcNow.Ticks;
 }).RequireRateLimiting("goAway");
 
+
+
+
+
+
+
+
+
 app.MapGet("/short-circuit", () => "I'm executed immediately!")
     .ShortCircuit();
+
+
+
+
+
+
+
+
+
+
+
 
 app.MapGet("/upload", (HttpContext context, IAntiforgery antiforgery) =>
 {
@@ -72,6 +95,7 @@ app.MapGet("/upload", (HttpContext context, IAntiforgery antiforgery) =>
     </body>
     """, "text/html");
 });
+
 
 app.MapPost("/upload", async (
     IFormFile data, 
