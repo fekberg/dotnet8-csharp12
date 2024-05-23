@@ -1,6 +1,6 @@
 ﻿using Interceptors;
 
-#region Collection expressions & Spread operator
+#region Collection expressions & Spread element
 
 
 
@@ -8,7 +8,7 @@ List<byte> payload = [0x1, 0xf1, 0xaa, 0xf2];
 
 byte[] checksum = [0xff, 0xab];
 
-Span<byte> result = [..payload, ..checksum];
+byte[] result = [..payload, ..checksum];
 
 
 

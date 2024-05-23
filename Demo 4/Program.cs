@@ -1,4 +1,5 @@
 ﻿global using static System.Console;
+
 using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
@@ -37,6 +38,19 @@ builder.Services.AddRateLimiter(limiter => {
 
 #endregion
 
+#region Hosted Services
+
+builder.Services.AddHostedService<StockMonitorService>();
+
+#endregion
+
+
+
+
+
+
+
+
 var app = builder.Build();
 
 app.UseRateLimiter();
@@ -44,6 +58,9 @@ app.UseRateLimiter();
 app.UseExceptionHandler(options => { });
 
 app.UseAntiforgery();
+
+
+
 
 app.MapGet("/", (
     HttpContext context,
@@ -57,6 +74,7 @@ app.MapGet("/", (
 
         return DateTimeOffset.UtcNow.Ticks;
 }).RequireRateLimiting("goAway");
+
 
 
 

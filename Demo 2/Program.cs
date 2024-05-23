@@ -5,7 +5,7 @@
 
 var provider = new FakeTimeProvider()
 {
-    AutoAdvanceAmount = TimeSpan.FromHours(24)
+    AutoAdvanceAmount = TimeSpan.FromMinutes(60)
 };
 
 #endregion
@@ -26,9 +26,15 @@ record Order(DateTimeOffset PaymentReservedOn);
 
 class OrderService
 {
+    private readonly TimeProvider timeProvider;
+
+    public OrderService(TimeProvider timeProvider)
+    {
+        this.timeProvider = timeProvider;
+    }
     public bool HasPaymentExpired(Order order)
     {
-        return (DateTimeOffset.UtcNow - order.PaymentReservedOn).TotalDays > 30;
+        return (timeProvider.GetUtcNow() - order.PaymentReservedOn).TotalDays > 30;
     }
 }
 

@@ -1,5 +1,4 @@
-﻿using System.Globalization;
-using System.Net.Http.Json;
+﻿using System.Net.Http.Json;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.Json.Serialization.Metadata;
@@ -8,11 +7,14 @@ using System.Text.Json.Serialization.Metadata;
 
 var json = """
 {
+    "Username": "Filip",
     "PhoneNumbers": [
         "12345"
     ]
 }
 """;
+
+
 
 var user = JsonSerializer.Deserialize<User>(json);
 
